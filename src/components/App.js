@@ -46,22 +46,30 @@ function App() {
     }
   }
 
-
   React.useEffect(() => {
-    if(isEditProfilePopupOpen || isEditAvatarPopupOpen || isAddPlacePopupOpen || selectedCard.link) {
-    function handleEscKeyPress(e) {
-      if (e.key === "Escape") {
-        closeAllPopups();
+    if (
+      isEditProfilePopupOpen ||
+      isEditAvatarPopupOpen ||
+      isAddPlacePopupOpen ||
+      selectedCard.link
+    ) {
+      function handleEscKeyPress(e) {
+        if (e.key === "Escape") {
+          closeAllPopups();
+        }
       }
+      document.addEventListener("keydown", handleEscKeyPress);
+
+      return () => {
+        document.removeEventListener("keydown", handleEscKeyPress);
+      };
     }
-    document.addEventListener("keydown", handleEscKeyPress);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscKeyPress);
-    };
-  }}, [isEditProfilePopupOpen, isEditAvatarPopupOpen, isAddPlacePopupOpen, selectedCard]);
-    
-
+  }, [
+    isEditProfilePopupOpen,
+    isEditAvatarPopupOpen,
+    isAddPlacePopupOpen,
+    selectedCard,
+  ]);
 
   return (
     <div className="page">
