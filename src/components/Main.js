@@ -2,28 +2,27 @@ import React from "react";
 import api from "../utils/Api";
 import Card from "./Card";
 
-function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [userName, setUserName] = React.useState("");
   const [userDescription, setUserDescription] = React.useState("");
   const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-  const initialData = [api.getUserInfoFromServer(), api.getCardsFromServer()];
+    const initialData = [api.getUserInfoFromServer(), api.getCardsFromServer()];
 
-  Promise.all(initialData)
-  .then(([{name, about, avatar}, cards]) => {
-    setUserName(name);
-    setUserDescription(about);
-    setUserAvatar(avatar);
-    const cardsArray = Array.from(cards);
-    setCards(cardsArray);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    Promise.all(initialData)
+      .then(([{ name, about, avatar }, cards]) => {
+        setUserName(name);
+        setUserDescription(about);
+        setUserAvatar(avatar);
+        const cardsArray = Array.from(cards);
+        setCards(cardsArray);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-
 
   return (
     <main className="content">
@@ -63,7 +62,7 @@ function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
       <ul className="cards">
         {cards.map((card) => (
           <Card
-            id={card._id}
+            key={card._id}
             link={card.link}
             name={card.name}
             likeCounter={card.likes.length}
