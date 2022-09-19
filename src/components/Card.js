@@ -1,10 +1,10 @@
-function Card({id, link, name, card, likeCounter, onCardClick}) {
+function Card({ link, name, card, likeCounter, onCardClick }) {
   function handleClick() {
     onCardClick(card);
   }
 
   return (
-    <li className="card" id={id}>
+    <li className="card">
       <button
         className="card__trash-button"
         name="card__trash-button"
