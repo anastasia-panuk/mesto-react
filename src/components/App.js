@@ -14,58 +14,57 @@ function App() {
 
   const [selectedCard, setSelectedCard] = React.useState({});
 
-  const editProfilePopupState = `${!isEditProfilePopupOpen ? "" : "_opened"}`;
-  const editAvatarPopupState = `${!isEditAvatarPopupOpen ? "" : "_opened"}`;
-  const addPlacePopupState = `${!isAddPlacePopupOpen ? "" : "_opened"}`;
-
   function handleCardClick(selectedCard) {
     setSelectedCard(selectedCard);
   }
 
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
+    setIsAddPlacePopupOpen(true);
   }
 
-  function handleClosePopupsClick() {
+  function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({});
   }
 
-  function closeAllPopups(e) {
+  function handleClosePopupsClick(e) {
     if (
       e.target.classList.contains("popup") ||
       e.target.classList.contains("popup__close-button")
     ) {
-      handleClosePopupsClick();
+      closeAllPopups();
     }
   }
 
+
   React.useEffect(() => {
-    function useEsc(e) {
+    if(isEditProfilePopupOpen || isEditAvatarPopupOpen || isAddPlacePopupOpen || selectedCard.link) {
+    function handleEscKeyPress(e) {
       if (e.key === "Escape") {
-        handleClosePopupsClick();
+        closeAllPopups();
       }
     }
-
-    document.addEventListener("keydown", useEsc);
+    document.addEventListener("keydown", handleEscKeyPress);
 
     return () => {
-      document.removeEventListener("keydown", useEsc);
+      document.removeEventListener("keydown", handleEscKeyPress);
     };
-  }, []);
+  }}, [isEditProfilePopupOpen, isEditAvatarPopupOpen, isAddPlacePopupOpen, selectedCard]);
+    
+
 
   return (
-    <body className="page">
+    <div className="page">
       <Header />
       <Main
         onEditProfile={handleEditProfileClick}
@@ -77,8 +76,8 @@ function App() {
       <PopupWithForm
         name="profile"
         title="Редактировать профиль"
-        isOpen={editProfilePopupState}
-        onClose={closeAllPopups}
+        isOpen={isEditProfilePopupOpen}
+        onClose={handleClosePopupsClick}
       >
         <label className="popup__field">
           <input
@@ -86,10 +85,9 @@ function App() {
             name="user"
             id="user"
             type="text"
-            value=""
             placeholder="Как вас зовут?"
-            minlength="2"
-            maxlength="40"
+            minLength="2"
+            maxLength="40"
             required
           />
           <span className="popup__input-span error-user"></span>
@@ -100,10 +98,9 @@ function App() {
             name="profile"
             id="profile"
             type="text"
-            value=""
             placeholder="Расскажите о себе"
-            minlength="2"
-            maxlength="200"
+            minLength="2"
+            maxLength="200"
             required
           />
           <span className="popup__input-span error-profile"></span>
@@ -112,8 +109,8 @@ function App() {
       <PopupWithForm
         name="card-add"
         title="Новое место"
-        isOpen={addPlacePopupState}
-        onClose={closeAllPopups}
+        isOpen={isAddPlacePopupOpen}
+        onClose={handleClosePopupsClick}
       >
         <label className="popup__field">
           <input
@@ -121,10 +118,9 @@ function App() {
             name="name"
             id="name"
             type="text"
-            value=""
             placeholder="Название"
-            minlength="2"
-            maxlength="30"
+            minLength="2"
+            maxLength="30"
             required
           />
           <span className="popup__input-span error-name"></span>
@@ -135,7 +131,6 @@ function App() {
             name="link"
             id="link"
             type="url"
-            value=""
             placeholder="Ссылка на картинку"
             required
           />
@@ -145,8 +140,8 @@ function App() {
       <PopupWithForm
         name="user-avatar"
         title="Обновить аватар"
-        isOpen={editAvatarPopupState}
-        onClose={closeAllPopups}
+        isOpen={isEditAvatarPopupOpen}
+        onClose={handleClosePopupsClick}
       >
         <label className="popup__field">
           <input
@@ -154,7 +149,6 @@ function App() {
             name="avatar"
             id="avatar"
             type="url"
-            value=""
             placeholder="Ссылка на Ваш новый аватар"
             required
           />
@@ -163,8 +157,8 @@ function App() {
       </PopupWithForm>
       <PopupWithForm name="detite-card" title="Вы уверены?" />
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-    </body>
+      <ImagePopup card={selectedCard} onClose={handleClosePopupsClick} />
+    </div>
   );
 }
 
