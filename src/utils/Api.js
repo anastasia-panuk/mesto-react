@@ -37,8 +37,8 @@ class Api {
       },
 
       body: JSON.stringify({
-        name: data.user,
-        about: data.profile,
+        name: data.name,
+        about: data.about,
       }),
     }).then((res) => this._requestResult(res));
   }
@@ -72,28 +72,17 @@ class Api {
     }).then((res) => this._requestResult(res));
   }
 
-  addCardLike(data) {
-    return fetch(`${this._serverUrl}/cards/${data}/likes`, {
-      method: "PUT",
+  changeLikeCardStatus(card, likeCardStatus) {
+    return fetch(`${this._serverUrl}/cards/${card}/likes/`, {
+      method: (likeCardStatus ? "PUT": "DELETE"),
       headers: {
         authorization: this._token,
-        "Content-Type": "application/json",
       },
     }).then((res) => this._requestResult(res));
-  }
+    }
 
-  deleteCardLike(data) {
-    return fetch(`${this._serverUrl}/cards/${data}/likes`, {
-      method: "DELETE",
-      headers: {
-        authorization: this._token,
-        "Content-Type": "application/json",
-      },
-    }).then((res) => this._requestResult(res));
-  }
-
-  deleteCard(data) {
-    return fetch(`${this._serverUrl}/cards/${data}`, {
+  deleteCard(card) {
+    return fetch(`${this._serverUrl}/cards/${card._id}`, {
       method: "DELETE",
       headers: {
         authorization: this._token,
