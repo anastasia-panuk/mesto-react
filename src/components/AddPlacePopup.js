@@ -2,24 +2,20 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AppPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [name, setName] = React.useState("");
-  const [link, setLink] = React.useState("");
-
-  function handleName(evt) {
-    setName(evt.target.value);
-  }
-
-  function handleLink(evt) {
-    setLink(evt.target.value);
-  }
+  const nameRef = React.useRef();
+  const linkRef = React.useRef();
 
   function handleSubmit(evt) {
     evt.preventDefault();
 
+    const form = evt.target;
+
     onAddPlace({
-      name,
-      link,
+      name: nameRef.current.value,
+      link: linkRef.current.value,
     });
+
+    form.reset();
   }
 
   return (
@@ -35,12 +31,11 @@ function AppPlacePopup({ isOpen, onClose, onAddPlace }) {
           className="popup__input"
           name="name"
           id="name"
-          value={name}
           type="text"
           placeholder="Название"
           minLength="2"
           maxLength="30"
-          onChange={handleName}
+          ref={nameRef}
           required
         />
         <span className="popup__input-span error-name"></span>
@@ -50,10 +45,9 @@ function AppPlacePopup({ isOpen, onClose, onAddPlace }) {
           className="popup__input"
           name="link"
           id="link"
-          value={link}
           type="url"
           placeholder="Ссылка на картинку"
-          onChange={handleLink}
+          ref={linkRef}
           required
         />
         <span className="popup__input-span error-link"></span>

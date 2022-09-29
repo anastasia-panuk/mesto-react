@@ -10,7 +10,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   function handleName(evt) {
     setName(evt.target.value);
@@ -23,10 +23,14 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   function handleSubmit(evt) {
     evt.preventDefault();
 
+    const form = evt.target;
+
     onUpdateUser({
       name,
       about: description,
     });
+
+    form.reset()
   }
 
   return (
@@ -41,7 +45,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         <input
           className="popup__input"
           name="user"
-          value={name}
+          value={name || ""}
           id="user"
           type="text"
           placeholder="Как вас зовут?"
@@ -56,7 +60,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         <input
           className="popup__input"
           name="profile"
-          value={description}
+          value={description || ""}
           id="profile"
           type="text"
           placeholder="Расскажите о себе"

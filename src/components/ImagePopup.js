@@ -1,7 +1,7 @@
 function ImagePopup({ card, onClose }) {
   return (
     <section
-      className={`popup popup_type_card-add popup${card.link ? "_opened" : ""}`}
+      className={`popup popup_type_picture popup${card.link ? "_opened" : ""}`}
       onClick={onClose}
     >
       <div className="popup__container popup__container_image">
