@@ -33,6 +33,6 @@ Mesto - сервис по обмену фотографиями. Проект р
 
 ### Инструкция по запуску
 
-- Клонировать репозиторий git clone https://github.com/Sonyamaster1/mesto-react
+- Клонировать репозиторий git clone
 - Установить зависимости npm install
 - Запустить локально npm start
